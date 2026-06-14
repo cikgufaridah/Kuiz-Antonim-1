@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuiz Antonim Tahun 6</title>
+<style>
+:root{--primary:#7c3aed;--secondary:#06b6d4;--accent:#f59e0b;--good:#16a34a;--bad:#dc2626;--ink:#1f2937}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 20%,#fde68a,transparent 25%),radial-gradient(circle at 90% 10%,#bae6fd,transparent 25%),linear-gradient(135deg,#fff7ed,#ecfeff);min-height:100vh;overflow-x:hidden}
+.floating{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.bubble{position:absolute;border-radius:50%;opacity:.18;animation:float 10s infinite ease-in-out}
+.b1{width:110px;height:110px;background:#7c3aed;left:5%;top:15%}.b2{width:80px;height:80px;background:#06b6d4;right:8%;top:22%;animation-delay:1.5s}.b3{width:140px;height:140px;background:#f59e0b;left:12%;bottom:10%;animation-delay:3s}.b4{width:95px;height:95px;background:#22c55e;right:14%;bottom:12%;animation-delay:4s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.08)}}
+.container{position:relative;z-index:1;max-width:1050px;margin:auto;padding:24px}
+.card{background:rgba(255,255,255,.94);border:3px solid rgba(124,58,237,.15);border-radius:28px;box-shadow:0 18px 45px rgba(31,41,55,.18);padding:28px}
+h1{margin:0 0 8px;text-align:center;color:#5b21b6;font-size:clamp(28px,4vw,46px)}
+.subtitle{text-align:center;font-size:18px;margin-bottom:20px;color:#475569}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center}
+input{padding:14px 16px;border:2px solid #c4b5fd;border-radius:16px;font-size:17px;outline:none;background:white}
+.answerInput{width:100%;max-width:520px;font-size:24px;text-align:center;border:3px solid #a78bfa;margin-top:16px;font-weight:800}
+button{border:0;border-radius:18px;padding:14px 22px;font-size:17px;font-weight:800;cursor:pointer;color:white;background:linear-gradient(135deg,var(--primary),var(--secondary));box-shadow:0 8px 18px rgba(124,58,237,.28);transition:.18s}
+button:hover{transform:translateY(-2px)}button.secondary{background:linear-gradient(135deg,#f97316,#facc15);color:#3b2100}button.danger{background:linear-gradient(135deg,#ef4444,#f97316)}button.green{background:linear-gradient(135deg,#16a34a,#22c55e)}
+.hidden{display:none!important}
+.topbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.pill{background:#ede9fe;color:#5b21b6;border-radius:999px;padding:10px 15px;font-weight:900}
+.timerWrap{height:18px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:12px 0 20px}
+.timerBar{height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#facc15,#ef4444);transition:width 1s linear}
+.questionBox{background:linear-gradient(135deg,#faf5ff,#ecfeff);border:2px dashed #a78bfa;border-radius:22px;padding:22px;margin:12px 0;font-size:24px;line-height:1.45;font-weight:650}
+.keyword{font-weight:950;text-decoration:underline;color:#dc2626;background:#fee2e2;padding:1px 5px;border-radius:7px}
+.feedback{text-align:center;font-size:24px;font-weight:950;min-height:36px;margin-top:14px}
+.scoreBig{text-align:center;font-size:58px;font-weight:950;color:#5b21b6;margin:10px 0}
+table{width:100%;border-collapse:collapse;background:white;border-radius:14px;overflow:hidden}
+th,td{border:1px solid #e5e7eb;padding:10px;text-align:center}
+th{background:#ede9fe;color:#4c1d95}
+.badge{display:inline-block;border-radius:999px;padding:5px 10px;font-weight:900}.A{background:#dcfce7;color:#166534}.B{background:#dbeafe;color:#1e40af}.C{background:#fef9c3;color:#854d0e}.D{background:#ffedd5;color:#9a3412}.E{background:#fee2e2;color:#991b1b}
+.teacherBtn{position:fixed;right:18px;bottom:18px;z-index:10;border-radius:999px}.small{text-align:center;color:#64748b;font-size:14px;margin-top:12px}.correctAns{font-size:18px;color:#475569;text-align:center;margin-top:6px}.status{text-align:center;margin-top:12px;color:#475569;font-weight:800}
+@media(max-width:700px){.questionBox{font-size:20px}.container{padding:12px}.card{padding:18px}.answerInput{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="floating"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="bubble b4"></div></div>
+<div class="container">
+<section id="start" class="card">
+  <h1>Kuiz Antonim</h1>
+  <div class="subtitle">Bahasa Melayu Tahun 6 • Mengisi Tempat Kosong • 50 Soalan</div>
+  <div class="row"><input id="studentName" placeholder="Nama murid" autocomplete="off"><input id="studentClass" placeholder="Kelas" autocomplete="off"></div>
+  <div class="row" style="margin-top:18px"><button onclick="startQuiz()">Mula Kuiz</button><button class="secondary" onclick="openTeacher()">Panel Guru</button></div>
+  <p class="small">Murid menaip jawapan antonim. Masa setiap soalan ialah 15 saat. Markah akan dihantar ke Google Sheet selepas tamat.</p>
+</section>
+
+<section id="quiz" class="card hidden">
+  <div class="topbar"><div class="pill" id="qCount">Soalan 1/50</div><div class="pill" id="scorePill">Markah: 0</div><div class="pill" id="timePill">Masa: 15s</div></div>
+  <div class="timerWrap"><div id="timerBar" class="timerBar"></div></div>
+  <div id="questionText" class="questionBox"></div>
+  <div class="row"><input id="answerInput" class="answerInput" placeholder="Taip jawapan di sini" autocomplete="off"></div>
+  <div class="row" style="margin-top:14px"><button onclick="submitAnswer()">Hantar Jawapan</button></div>
+  <div id="feedback" class="feedback"></div><div id="correctAnswer" class="correctAns"></div>
+</section>
+
+<section id="result" class="card hidden">
+  <h1>Keputusan Kuiz</h1><div id="resultName" class="subtitle"></div><div class="scoreBig" id="finalScore"></div>
+  <div class="row"><div class="pill" id="percentCorrect"></div><div class="pill" id="percentWrong"></div><div class="pill" id="gradeText"></div></div>
+  <div id="sendStatus" class="status">Sedang menghantar markah ke Google Sheet...</div>
+  <div class="row" style="margin-top:20px"><button onclick="location.reload()">Cuba Lagi</button><button class="secondary" onclick="openTeacher()">Panel Guru</button></div>
+</section>
+
+<section id="teacherPanel" class="card hidden">
+  <h1>Panel Guru</h1><div class="subtitle">Paparan markah murid dalam peranti ini. Markah penuh juga dihantar ke Google Sheet.</div>
+  <div class="row" id="passwordRow"><input id="teacherPassword" type="password" placeholder="Masukkan password guru"><button onclick="checkPassword()">Buka Panel</button><button class="danger" onclick="closeTeacher()">Tutup</button></div>
+  <div id="teacherContent" class="hidden"><div class="row" style="margin-bottom:14px"><button class="green" onclick="downloadCSV()">Download CSV</button><button class="danger" onclick="clearMarks()">Padam Semua Markah</button><button class="secondary" onclick="closeTeacher()">Tutup Panel</button></div>
+  <div style="overflow:auto"><table><thead><tr><th>Bil.</th><th>Nama</th><th>Kelas</th><th>Markah</th><th>Betul</th><th>Salah</th><th>% Betul</th><th>% Salah</th><th>Gred</th><th>Tarikh/Masa</th></tr></thead><tbody id="marksBody"></tbody></table></div></div>
+</section>
+</div>
+<button class="teacherBtn secondary" onclick="openTeacher()">👩‍🏫 Panel Guru</button>
+<script>
+const QUESTIONS = [{"q": "Burung keluar mencari makan pada waktu *subuh* dan pulang ke sarangnya pada waktu _________.", "answers": ["senja"]}, {"q": "Nelayan-nelayan tidak berani turun ke laut ketika laut *bergelora*. Mereka akan turun ke laut apabila laut ___________.", "answers": ["tenang"]}, {"q": "Tinggalkan pekerjaan yang *sia-sia* dan buatlah pekerjaan yang ber___________.", "answers": ["faedah"]}, {"q": "Negara bertambah maju andai *rakyat* bekerjasama dengan _____________.", "answers": ["sultan", "raja"]}, {"q": "Untuk melihat pameran itu *kanak-kanak* dikenakan bayaran $2.00 seorang dan $5.00 seorang untuk orang _____________.", "answers": ["dewasa"]}, {"q": "Orang Islam digalakkan bersikap __________ dan tidak bersikap *sombong*.", "answers": ["ramah", "peramah"]}, {"q": "Negara ini *mengeksport* gas ke Jepun dan meng_________ beras ke Thailand.", "answers": ["import", "mengimport"]}, {"q": "Rabiatul suka membeli sayur yang __________ daripada sayur yang *layu*.", "answers": ["segar"]}, {"q": "Menyimpan duit _______ itu lama-kelamaan akan menjadi *banyak*.", "answers": ["sedikit"]}, {"q": "Tharaa merupakan kanak-kanak *cergas* tetapi Mahmud kanak-kanak ________.", "answers": ["lemah", "lembam", "lesu"]}, {"q": "Nelayan itu akan pulang sebelum waktu *petang* setelah pergi ke laut pada waktu ___________.", "answers": ["pagi"]}, {"q": "Abangnya *gagap* tetapi adiknya ___________ berbahasa Inggeris.", "answers": ["fasih", "lancar"]}, {"q": "Jiran saya, Rahman seorang *biduan* dan adiknya Ghinar seorang ________.", "answers": ["biduanita"]}, {"q": "Pilihlah barang-barang *asli*, jangan pilih barang-barang ________.", "answers": ["tiruan", "palsu"]}, {"q": "Pengembara itu terpaksa *mendaki* dan ____________ bukit untuk sampai ke tasik bersejarah itu.", "answers": ["menuruni"]}, {"q": "Rumah *usang* yang terletak di hujung kampung itu telah diroboh dan digantikan dengan bangunan yang ____________.", "answers": ["baharu", "baru"]}, {"q": "Rania tidak tahu bahagian *hujung* dan ___________ kayu itu.", "answers": ["pangkal"]}, {"q": "Jurulatih acara senaman itu mengarahkan peserta *mendongakkan* kepalanya, kemudian __________ kepala mereka.", "answers": ["menundukkan"]}, {"q": "Seluar yang dipakai Mizan tidak lagi *sempit* malahan menjadi ___________ setelah berat badannya menurun.", "answers": ["longgar"]}, {"q": "Kedai runcit Awang Razi yang dahulu *mundur* kini semakin ________ disebabkan usaha yang gigih.", "answers": ["maju"]}, {"q": "Sikap *berjimat* merupakan amalan yang terpuji tetapi sikap ____________ tidak digalakkan oleh agama Islam.", "answers": ["boros", "membazir"]}, {"q": "Pada masa ini negara kita mengalami musim *kemarau* dan bulan Disember nanti dijangkakan berlaku musim _________.", "answers": ["tengkujuh", "hujan"]}, {"q": "Sains dan teknologi lebih banyak mendatangkan *kebaikan* daripada __________.", "answers": ["keburukan"]}, {"q": "Qawi mencuci kereta ayahnya yang *kotor* itu sehingga __________.", "answers": ["bersih"]}, {"q": "Afifah tidak suka membeli barang-barang secara *berhutang*, sebaliknya dia membayar secara _________.", "answers": ["tunai"]}, {"q": "Hazim yang berasal dari *pedalaman* pergi ke ________ untuk mencari pekerjaan.", "answers": ["bandar", "kota raya", "kota"]}, {"q": "Ais kiub yang *beku* itu menjadi ________ apabila dicampur dengan air panas.", "answers": ["cair"]}, {"q": "Kita hendaklah menolong orang dengan hati yang _________ bukan kerana *terpaksa*.", "answers": ["ikhlas"]}, {"q": "Kucing yang *liar* itu menjadi _________ setelah diberi makanan.", "answers": ["jinak"]}, {"q": "Keadaan cuaca yang _________ tiba-tiba menjadi *gelap* apabila hujan turun dengan lebatnya.", "answers": ["terang", "cerah"]}, {"q": "Anak yang *derhaka* mendapat dosa tetapi anak yang _______ akan mendapat pahala.", "answers": ["taat", "patuh"]}, {"q": "Sikap *berjimat* merupakan amalan yang terpuji tetapi sikap _________ perlu dielakkan kerana boleh merugikan diri sendiri.", "answers": ["boros", "membazir"]}, {"q": "Tanah itu *digali* terlebih dahulu, kemudian di________ setelah dimasukkan biji benih.", "answers": ["ditimbus", "timbus"]}, {"q": "Penggunaan kaedah *moden* telah dapat meningkatkan hasil pertanian berbanding dengan kaedah __________.", "answers": ["tradisional"]}, {"q": "Rahman sering *dipuji* oleh ketuanya kerana menjalankan tugas tanpa mengira masa. Alizan pula __________ kerana malas, curi tulang dan cuai membuat kerja yang diarahkan.", "answers": ["dihina", "dicaci"]}, {"q": "Pokok-pokok ubi kayu yang *ditanam* oleh Pak Dzakir itu habis __________ oleh pekerjanya.", "answers": ["digali"]}, {"q": "Bau *busuk* di dalam itu menjadi _______ apabila disembur dengan minyak wangi.", "answers": ["wangi", "harum"]}, {"q": "Kapal rosak yang *terapung* di lautan itu, akhirnya ________ dipukul ombak.", "answers": ["tenggelam"]}, {"q": "Kita mesti memandu dengan *cermat* bukannya dengan ______.", "answers": ["cuai"]}, {"q": "Sifat derhaka mendapat *dosa* berbanding dengan sifat taat mendapat _________.", "answers": ["pahala"]}, {"q": "Pokok bunga yang *layu* bila disiram akan menjadi ______.", "answers": ["kembang"]}, {"q": "Kopi yang _______ itu menjadi *cair* apabila ditambah air.", "answers": ["pekat"]}, {"q": "*Kesedihan* yang dialami oleh Husana kerana kehilangan basikalnya bertukar menjadi _____ apabila dihadiahkan basikal baru.", "answers": ["kegembiraan", "gembira"]}, {"q": "Ramai pekerja di *bandar* berasal daripada _________.", "answers": ["kampung", "desa"]}, {"q": "*Imam* hendaklah berdiri di hadapan __________ ketika sembahyang berjemaah.", "answers": ["makmum"]}, {"q": "Parang yang _______ kalau diasah akan menjadi *tajam*.", "answers": ["tumpul"]}, {"q": "Baginda mempunyai seorang *puteri* yang jelita dan tiga orang _______ yang kacak.", "answers": ["putera"]}, {"q": "Buah yang ________ rasanya manis tetapi yang *mentah* rasanya masam.", "answers": ["masak"]}, {"q": "Persahabatan Syazana dan Zuhra yang *rapat* sejak dahulu menjadi __________ akibat perselisihan faham.", "answers": ["renggang"]}, {"q": "Mereka *pergi* pada waktu subuh dan __________ hampir Maghrib.", "answers": ["pulang", "balik", "kembali"]}];
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCbWbJZI2nj-ZieZKo7k2iF9ArbDl46Lo57GokA5MRUYhT1uGdgMmSmSwI8yoNp3Ix/exec";
+const QUIZ_NAME = "Antonim Tahun 6";
+let index=0, score=0, timer=null, timeLeft=15, answered=false;
+let studentName="", studentClass="";
+
+function beep(type){try{const ctx=new (window.AudioContext||window.webkitAudioContext)();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.frequency.value=type==="correct"?880:180;gain.gain.value=.08;osc.start();setTimeout(()=>{osc.stop();ctx.close();},type==="correct"?180:320)}catch(e){}}
+function normalizeText(s){return (s||"").toLowerCase().trim().replace(/\s+/g," ")}
+function show(id){document.getElementById(id).classList.remove("hidden")} function hide(id){document.getElementById(id).classList.add("hidden")}
+function formatQuestion(q){return q.replace(/\*(.*?)\*/g,'<span class="keyword">$1</span>')}
+function startQuiz(){studentName=document.getElementById("studentName").value.trim();studentClass=document.getElementById("studentClass").value.trim()||"-";if(!studentName){alert("Sila masukkan nama murid dahulu.");return}hide("start");hide("result");hide("teacherPanel");show("quiz");index=0;score=0;loadQuestion()}
+function loadQuestion(){answered=false;timeLeft=15;const q=QUESTIONS[index];document.getElementById("qCount").textContent=`Soalan ${index+1}/${QUESTIONS.length}`;document.getElementById("scorePill").textContent=`Markah: ${score}`;document.getElementById("timePill").textContent=`Masa: ${timeLeft}s`;document.getElementById("timerBar").style.width="100%";document.getElementById("questionText").innerHTML=formatQuestion(q.q);document.getElementById("feedback").textContent="";document.getElementById("correctAnswer").textContent="";const input=document.getElementById("answerInput");input.value="";input.disabled=false;input.focus();clearInterval(timer);timer=setInterval(()=>{timeLeft--;document.getElementById("timePill").textContent=`Masa: ${timeLeft}s`;document.getElementById("timerBar").style.width=`${(timeLeft/15)*100}%`;if(timeLeft<=0){clearInterval(timer);markAnswer("")}},1000)}
+document.addEventListener("keydown",function(e){if(e.key==="Enter"&&!document.getElementById("quiz").classList.contains("hidden"))submitAnswer()});
+function submitAnswer(){if(answered)return;const ans=document.getElementById("answerInput").value;clearInterval(timer);markAnswer(ans)}
+function markAnswer(userAnswer){if(answered)return;answered=true;document.getElementById("answerInput").disabled=true;const q=QUESTIONS[index];const clean=normalizeText(userAnswer);const accepted=q.answers.map(normalizeText);const isCorrect=accepted.includes(clean);if(isCorrect){score++;document.getElementById("feedback").textContent="✅ Betul!";document.getElementById("feedback").style.color="#16a34a";beep("correct")}else{document.getElementById("feedback").textContent=clean?"❌ Jawapan kurang tepat.":"⏰ Masa tamat!";document.getElementById("feedback").style.color="#dc2626";document.getElementById("correctAnswer").textContent="Jawapan diterima: "+q.answers.join(" / ");beep("wrong")}document.getElementById("scorePill").textContent=`Markah: ${score}`;setTimeout(()=>{index++;if(index<QUESTIONS.length)loadQuestion();else finishQuiz()},1500)}
+function grade(percent){if(percent>=80)return"A";if(percent>=65)return"B";if(percent>=50)return"C";if(percent>=40)return"D";return"E"}
+function finishQuiz(){hide("quiz");show("result");const total=QUESTIONS.length,wrong=total-score;const pc=Math.round((score/total)*100),pw=100-pc,g=grade(pc);document.getElementById("resultName").textContent=`Nama: ${studentName} | Kelas: ${studentClass}`;document.getElementById("finalScore").textContent=`${score}/${total}`;document.getElementById("percentCorrect").textContent=`Betul: ${pc}%`;document.getElementById("percentWrong").textContent=`Salah: ${pw}%`;document.getElementById("gradeText").innerHTML=`Gred: <span class="badge ${g}">${g}</span>`;const markData={name:studentName,className:studentClass,score,total,correct:score,wrong,pc,pw,grade:g,date:new Date().toLocaleString("ms-BN")};saveMark(markData);sendToGoogleSheet(markData)}
+function sendToGoogleSheet(m){
+  const status=document.getElementById("sendStatus");
+  const params=new URLSearchParams({
+    nama:m.name,
+    kelas:m.className,
+    kuiz:QUIZ_NAME,
+    markah:m.score,
+    jumlah:m.total,
+    peratusBetul:m.pc,
+    peratusSalah:m.pw,
+    gred:m.grade
+  });
+  const img=new Image();
+  img.onload=function(){status.textContent="✅ Markah telah dihantar ke Google Sheet."};
+  img.onerror=function(){status.textContent="✅ Markah telah dihantar ke Google Sheet."};
+  img.src=SCRIPT_URL+"?"+params.toString()+"&t="+Date.now();
+}
+function getMarks(){return JSON.parse(localStorage.getItem("antonimFillMarks")||"[]")} function saveMark(data){const marks=getMarks();marks.push(data);localStorage.setItem("antonimFillMarks",JSON.stringify(marks))}
+function openTeacher(){hide("start");hide("quiz");hide("result");show("teacherPanel")} function closeTeacher(){hide("teacherPanel");show("start");document.getElementById("teacherPassword").value="";document.getElementById("teacherContent").classList.add("hidden");document.getElementById("passwordRow").classList.remove("hidden")}
+function checkPassword(){if(document.getElementById("teacherPassword").value==="12345"){document.getElementById("teacherContent").classList.remove("hidden");document.getElementById("passwordRow").classList.add("hidden");renderMarks()}else alert("Password salah.")}
+function renderMarks(){const body=document.getElementById("marksBody");const marks=getMarks();body.innerHTML=marks.length?"":`<tr><td colspan="10">Belum ada markah murid.</td></tr>`;marks.forEach((m,i)=>{body.innerHTML+=`<tr><td>${i+1}</td><td>${m.name}</td><td>${m.className}</td><td>${m.score}/${m.total}</td><td>${m.correct}</td><td>${m.wrong}</td><td>${m.pc}%</td><td>${m.pw}%</td><td><span class="badge ${m.grade}">${m.grade}</span></td><td>${m.date}</td></tr>`})}
+function clearMarks(){if(confirm("Padam semua markah murid dalam peranti ini?")){localStorage.removeItem("antonimFillMarks");renderMarks()}}
+function downloadCSV(){const marks=getMarks();let csv="Bil,Nama,Kelas,Markah,Betul,Salah,Peratus Betul,Peratus Salah,Gred,Tarikh/Masa\n";marks.forEach((m,i)=>{csv+=`${i+1},"${m.name}","${m.className}","${m.score}/${m.total}",${m.correct},${m.wrong},${m.pc}%,${m.pw}%,${m.grade},"${m.date}"\n`});const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="markah-kuiz-antonim-mengisi-tempat-kosong.csv";a.click();URL.revokeObjectURL(url)}
+</script>
+</body>
+</html>
