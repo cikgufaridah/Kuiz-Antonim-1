@@ -103,10 +103,11 @@ function sendToGoogleSheet(m){
     peratusSalah:m.pw,
     gred:m.grade
   });
-  const img=new Image();
-  img.onload=function(){status.textContent="✅ Markah telah dihantar ke Google Sheet."};
-  img.onerror=function(){status.textContent="✅ Markah telah dihantar ke Google Sheet."};
-  img.src=SCRIPT_URL+"?"+params.toString()+"&t="+Date.now();
+  fetch(SCRIPT_URL + "?" + params.toString() + "&t=" + Date.now(), {
+  method: "GET",
+  mode: "no-cors"
+});
+status.textContent = "✅ Markah telah dihantar ke Google Sheet.";
 }
 function getMarks(){return JSON.parse(localStorage.getItem("antonimFillMarks")||"[]")} function saveMark(data){const marks=getMarks();marks.push(data);localStorage.setItem("antonimFillMarks",JSON.stringify(marks))}
 function openTeacher(){hide("start");hide("quiz");hide("result");show("teacherPanel")} function closeTeacher(){hide("teacherPanel");show("start");document.getElementById("teacherPassword").value="";document.getElementById("teacherContent").classList.add("hidden");document.getElementById("passwordRow").classList.remove("hidden")}
